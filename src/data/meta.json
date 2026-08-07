@@ -1,0 +1,9 @@
+{
+  "sistOppdatert": null,
+  "antallTotalt": 0,
+  "kilder": {
+    "frivillighetsregisteret": { "antall": 0, "hentet": null, "feil": null },
+    "ringerikeKommune": { "antall": 0, "hentet": null, "feil": null },
+    "manuell": { "antall": 0, "hentet": null, "feil": null }
+  }
+}

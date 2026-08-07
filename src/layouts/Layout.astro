@@ -1,0 +1,45 @@
+---
+import '../styles/global.css';
+import { BASE_URL } from '../site';
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = 'Oversikt over fritidstilbud for barn, unge og voksne i Ringerike kommune.' } = Astro.props;
+const base = BASE_URL;
+---
+
+<!doctype html>
+<html lang="nb">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+    <link rel="icon" href={`${base}favicon.svg`} type="image/svg+xml" />
+  </head>
+  <body>
+    <header class="site-header">
+      <div class="wrap">
+        <a href={base}><h1>Fritid i Ringerike</h1></a>
+        <nav>
+          <a href={base}>Alle tilbud</a>
+          <a href={`${base}om/`}>Om siden</a>
+        </nav>
+      </div>
+    </header>
+    <main class="wrap">
+      <slot />
+    </main>
+    <footer class="site-footer">
+      <div class="wrap">
+        <p>
+          Fritid i Ringerike er en uoffisiell, automatisk oppdatert oversikt — ikke en tjeneste fra Ringerike kommune.
+          Se <a href={`${base}om/`}>kilder og metode</a>.
+        </p>
+      </div>
+    </footer>
+  </body>
+</html>
