@@ -5,9 +5,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "unge"
     ],
     "adresse": "c/o Bjørn Holen, Støaveien 91",
     "poststed": "3533 TYRISTRAND",
@@ -991,9 +989,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": "c/o Anita Bergflødt, Konvallveien 9B",
     "poststed": "3515 HØNEFOSS",
@@ -1143,9 +1139,7 @@
     "beskrivelse": "Utøvende kunstnerisk virksomhet og underholdningsvirksomhet innenfor musikk",
     "kategori": "kultur",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "unge"
     ],
     "adresse": "Benterud Skole, Harald Hardrådes gate 31",
     "poststed": "3511 HØNEFOSS",
@@ -1764,9 +1758,7 @@
     "beskrivelse": "Utøvende kunstnerisk virksomhet og underholdningsvirksomhet innenfor musikk",
     "kategori": "kultur",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "unge"
     ],
     "adresse": "c/o Steffen Torgersbråten, Nymobakken 39",
     "poststed": "3516 HØNEFOSS",
@@ -1840,9 +1832,7 @@
     "beskrivelse": "Aktiviteter i idrettslag og -klubber",
     "kategori": "idrett",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": "c/o Halvard Olsen Gjestvang, Lostajet 6",
     "poststed": "3514 HØNEFOSS",
@@ -2030,9 +2020,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": "c/o Kristin Sem-Johansen, Knuterudveien 7",
     "poststed": "3525 HALLINGBY",
@@ -2539,9 +2527,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": null,
     "poststed": null,
@@ -2596,9 +2582,7 @@
     "beskrivelse": "Utøvende kunstnerisk virksomhet og underholdningsvirksomhet innenfor musikk",
     "kategori": "kultur",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "unge"
     ],
     "adresse": "c/o Ullerål Skole, Hovsmarkveien 7",
     "poststed": "3515 HØNEFOSS",
@@ -2632,9 +2616,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "unge"
     ],
     "adresse": "Sundgata 44",
     "poststed": "3510 HØNEFOSS",
@@ -2839,9 +2821,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": "c/o Knut Olberg, Fløytingen 64",
     "poststed": "3514 HØNEFOSS",
@@ -2877,9 +2857,7 @@
     "beskrivelse": "Aktiviteter i idrettslag og -klubber",
     "kategori": "idrett",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": null,
     "poststed": null,
@@ -2896,9 +2874,7 @@
     "beskrivelse": "Aktiviteter i idrettslag og -klubber",
     "kategori": "idrett",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": null,
     "poststed": null,
@@ -3295,9 +3271,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": "c/o Lenny Moholdt, Ludvig Grønvolds vei 21B",
     "poststed": "3517 HØNEFOSS",
@@ -4353,9 +4327,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": "Hensmoveien 31",
     "poststed": "3516 HØNEFOSS",
@@ -4940,6 +4912,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
+      "barn",
       "unge"
     ],
     "adresse": "c/o Hanne Nyhus Lerfaldet, Soknedalsveien 230",
@@ -5222,9 +5195,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": "c/o Per D. Jensen, Øvre Klekkenvei 34",
     "poststed": "3514 HØNEFOSS",
@@ -6225,7 +6196,6 @@
     "beskrivelse": "Utøvende kunstnerisk virksomhet og underholdningsvirksomhet innenfor musikk",
     "kategori": "kultur",
     "aldersgruppe": [
-      "barn",
       "unge",
       "voksne"
     ],
@@ -6692,9 +6662,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "unge"
     ],
     "adresse": "Tranbyveien 135",
     "poststed": "3534 SOKNA",
@@ -7619,6 +7587,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
+      "barn",
       "unge"
     ],
     "adresse": "Stabells gate 12A",
@@ -7818,9 +7787,7 @@
     "beskrivelse": "Utøvende kunstnerisk virksomhet og underholdningsvirksomhet innenfor musikk",
     "kategori": "kultur",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "unge"
     ],
     "adresse": "Ullerål Skole",
     "poststed": "3503 HØNEFOSS",
@@ -7966,9 +7933,7 @@
     "beskrivelse": "Utøvende kunstnerisk virksomhet og underholdningsvirksomhet innenfor musikk",
     "kategori": "kultur",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "unge"
     ],
     "adresse": "Veien skole",
     "poststed": "3517 HØNEFOSS",
@@ -8232,9 +8197,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": "c/o Karianne Bakken Grøterud, Ådalsveien 727",
     "poststed": "3525 HALLINGBY",
@@ -8270,9 +8233,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": "v/ Ole O. Ringerud, Vestre Ådal 623",
     "poststed": "3516 HØNEFOSS",
@@ -8289,9 +8250,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": "c/o Marit Myhrvold, Lønnhaugveien 19",
     "poststed": "3514 HØNEFOSS",
@@ -8365,9 +8324,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "unge"
     ],
     "adresse": "c/o Malene Høeg, Permobakken 13",
     "poststed": "3534 SOKNA",
@@ -8515,9 +8472,7 @@
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
     "kategori": "frivillighet",
     "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
+      "barn"
     ],
     "adresse": "Fleskerudveien 47",
     "poststed": "3512 HØNEFOSS",
