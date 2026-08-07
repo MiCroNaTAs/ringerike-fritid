@@ -1,0 +1,15 @@
+[
+  {
+    "id": "manuell-eksempel-fritidsklubb",
+    "navn": "Eksempel fritidsklubb",
+    "beskrivelse": "Kort beskrivelse av tilbudet. Denne filen er kun et eksempel og leses ikke av oppdateringsskriptet.",
+    "kategori": "frivillighet",
+    "aldersgruppe": ["unge"],
+    "adresse": "Storgata 1",
+    "poststed": "Hønefoss",
+    "nettside": "https://example.org",
+    "epost": "post@example.org",
+    "telefon": null,
+    "organisasjonsnummer": null
+  }
+]

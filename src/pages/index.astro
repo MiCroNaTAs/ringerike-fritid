@@ -1,0 +1,136 @@
+---
+import Layout from '../layouts/Layout.astro';
+import tilbud from '../data/tilbud.json';
+import meta from '../data/meta.json';
+
+const KATEGORI_LABEL: Record<string, string> = {
+  idrett: 'Idrett',
+  kultur: 'Kultur',
+  frivillighet: 'Frivillighet',
+  annet: 'Annet',
+};
+
+const ALDER_LABEL: Record<string, string> = {
+  barn: 'Barn',
+  unge: 'Unge',
+  voksne: 'Voksne',
+};
+
+const KILDE_LABEL: Record<string, string> = {
+  frivillighetsregisteret: 'Frivillighetsregisteret',
+  'ringerike-kommune': 'Ringerike kommune',
+  manuell: 'Manuelt lagt til',
+};
+
+function formatDato(iso: string | null): string {
+  if (!iso) return 'aldri (ingen automatisk oppdatering har kjørt enda)';
+  return new Date(iso).toLocaleString('nb-NO', {
+    dateStyle: 'long',
+    timeStyle: 'short',
+    timeZone: 'Europe/Oslo',
+  });
+}
+---
+
+<Layout title="Fritid i Ringerike – oversikt over fritidstilbud">
+  <p class="intro">
+    Samlet oversikt over lag, foreninger og fritidstilbud for barn, unge og voksne i Ringerike kommune.
+    Listen hentes automatisk fra <a href="https://www.brreg.no/produkt/frivillighetsregisteret/" target="_blank" rel="noopener">Frivillighetsregisteret</a>
+    og Ringerike kommunes nettsider, og suppleres med manuelt lagt-til tilbud. Se <a href={`${import.meta.env.BASE_URL}om/`}>hvordan dette fungerer</a>.
+  </p>
+
+  <p class="result-count" id="last-updated">Sist oppdatert: {formatDato(meta.sistOppdatert)} · {tilbud.length} tilbud totalt</p>
+
+  <div class="controls">
+    <input type="search" id="search-input" placeholder="Søk etter navn …" aria-label="Søk etter tilbud" />
+    <div class="chip-row" id="kategori-chips" data-filter-group="kategori">
+      <span class="label">Kategori</span>
+      <button type="button" class="chip" data-value="alle" aria-pressed="true">Alle</button>
+      {Object.entries(KATEGORI_LABEL).map(([value, label]) => (
+        <button type="button" class="chip" data-value={value} aria-pressed="false">{label}</button>
+      ))}
+    </div>
+    <div class="chip-row" id="alder-chips" data-filter-group="alder">
+      <span class="label">Aldersgruppe</span>
+      <button type="button" class="chip" data-value="alle" aria-pressed="true">Alle</button>
+      {Object.entries(ALDER_LABEL).map(([value, label]) => (
+        <button type="button" class="chip" data-value={value} aria-pressed="false">{label}</button>
+      ))}
+    </div>
+  </div>
+
+  <p class="result-count" id="result-count">Viser {tilbud.length} av {tilbud.length} tilbud</p>
+
+  {tilbud.length === 0 ? (
+    <div class="empty-state">
+      <p>Ingen tilbud er hentet enda. Den automatiske oppdateringen har ikke kjørt, eller kildene ga ingen treff.</p>
+      <p>Se <a href={`${import.meta.env.BASE_URL}om/`}>Om siden</a> for status på datakildene.</p>
+    </div>
+  ) : (
+    <div class="tilbud-grid" id="tilbud-grid">
+      {tilbud.map((t) => (
+        <article
+          class="tilbud-card"
+          data-navn={t.navn.toLowerCase()}
+          data-kategori={t.kategori}
+          data-alder={t.aldersgruppe.join(',')}
+        >
+          <span class="badge kilde">{KILDE_LABEL[t.kilde] ?? t.kilde}</span>
+          <h3>{t.navn}</h3>
+          <p class="meta-line">
+            {KATEGORI_LABEL[t.kategori] ?? t.kategori} · {t.aldersgruppe.map((a: string) => ALDER_LABEL[a] ?? a).join(', ')}
+          </p>
+          {t.poststed && <p class="meta-line">{[t.adresse, t.poststed].filter(Boolean).join(', ')}</p>}
+          {t.beskrivelse && <p class="desc">{t.beskrivelse}</p>}
+          {t.nettside && (
+            <a class="website" href={t.nettside} target="_blank" rel="noopener">Besøk nettsted →</a>
+          )}
+          {!t.nettside && t.kildeUrl && (
+            <a class="website" href={t.kildeUrl} target="_blank" rel="noopener">Se i register →</a>
+          )}
+        </article>
+      ))}
+    </div>
+  )}
+
+  <script>
+    const searchInput = document.getElementById('search-input') as HTMLInputElement | null;
+    const grid = document.getElementById('tilbud-grid');
+    const resultCount = document.getElementById('result-count');
+    const cards = grid ? Array.from(grid.querySelectorAll<HTMLElement>('.tilbud-card')) : [];
+
+    const state = { search: '', kategori: 'alle', alder: 'alle' };
+
+    function applyFilters() {
+      let visible = 0;
+      for (const card of cards) {
+        const matchesSearch = !state.search || (card.dataset.navn ?? '').includes(state.search);
+        const matchesKategori = state.kategori === 'alle' || card.dataset.kategori === state.kategori;
+        const alderList = (card.dataset.alder ?? '').split(',');
+        const matchesAlder = state.alder === 'alle' || alderList.includes(state.alder);
+        const show = matchesSearch && matchesKategori && matchesAlder;
+        card.style.display = show ? '' : 'none';
+        if (show) visible += 1;
+      }
+      if (resultCount) resultCount.textContent = `Viser ${visible} av ${cards.length} tilbud`;
+    }
+
+    searchInput?.addEventListener('input', () => {
+      state.search = searchInput.value.trim().toLowerCase();
+      applyFilters();
+    });
+
+    document.querySelectorAll<HTMLElement>('.chip-row').forEach((row) => {
+      const group = row.dataset.filterGroup as 'kategori' | 'alder' | undefined;
+      if (!group) return;
+      row.querySelectorAll<HTMLButtonElement>('button.chip').forEach((btn) => {
+        btn.addEventListener('click', () => {
+          row.querySelectorAll('button.chip').forEach((b) => b.setAttribute('aria-pressed', 'false'));
+          btn.setAttribute('aria-pressed', 'true');
+          state[group] = btn.dataset.value ?? 'alle';
+          applyFilters();
+        });
+      });
+    });
+  </script>
+</Layout>

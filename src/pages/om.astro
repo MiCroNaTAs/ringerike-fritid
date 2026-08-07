@@ -1,0 +1,81 @@
+---
+import Layout from '../layouts/Layout.astro';
+import meta from '../data/meta.json';
+
+const REPO_URL = 'https://github.com/MiCroNaTAs/ringerike-fritid';
+
+function formatDato(iso: string | null): string {
+  if (!iso) return 'har ikke kjørt enda';
+  return new Date(iso).toLocaleString('nb-NO', { dateStyle: 'long', timeStyle: 'short', timeZone: 'Europe/Oslo' });
+}
+
+const kilder = [
+  {
+    navn: 'Frivillighetsregisteret',
+    beskrivelse:
+      'Hentes automatisk fra Brønnøysundregistrenes åpne Enhetsregister-API, filtrert på Ringerike kommune (kommunenummer 3305) og enheter registrert i Frivillighetsregisteret. Dette gir stort sett idrettslag, kulturforeninger og andre frivillige lag — men registeret inneholder ikke kontaktinfo som nettside, e-post eller telefon, kun navn, adresse og bransjekode.',
+    status: meta.kilder.frivillighetsregisteret,
+  },
+  {
+    navn: 'Ringerike kommunes nettsider',
+    beskrivelse:
+      'En beste-innsats-henting av lenker fra kommunens side om fritidsaktiviteter. Dette er en enkel skraping, ikke et offisielt API, og kan innimellom plukke opp menypunkter som ikke er reelle tilbud, eller gå glipp av ting hvis kommunen endrer sidestrukturen. Sjekk gjerne kildelenken på hvert tilbud.',
+    status: meta.kilder.ringerikeKommune,
+  },
+  {
+    navn: 'Manuelt lagt til',
+    beskrivelse:
+      'Tilbud som ikke finnes i noen registre (f.eks. uformelle møteplasser) kan legges inn manuelt i data/manual-tilbud.json i kildekoden.',
+    status: meta.kilder.manuell,
+  },
+];
+---
+
+<Layout title="Om siden – Fritid i Ringerike" description="Kilder, metode og begrensninger for oversikten over fritidstilbud i Ringerike kommune.">
+  <h2>Om denne siden</h2>
+  <p>
+    Fritid i Ringerike er et uoffisielt prosjekt som samler fritidstilbud for barn, unge og voksne i Ringerike
+    kommune på ett sted. Siden er <strong>ikke</strong> driftet av Ringerike kommune. Innholdet oppdateres automatisk
+    med jevne mellomrom via en planlagt jobb som henter fra offentlige registre og nettsider, bygger siden på nytt
+    og publiserer den — uten at noen trenger å redigere innhold manuelt.
+  </p>
+
+  <h3>Datakilder</h3>
+  {kilder.map((k) => (
+    <div class="callout" style="margin-bottom: 1rem;">
+      <h4 style="margin-top:0;">{k.navn}</h4>
+      <p>{k.beskrivelse}</p>
+      <p class="meta-line">
+        Sist forsøkt hentet: {formatDato(k.status?.hentet ?? null)} · Antall hentet: {k.status?.antall ?? 0}
+        {k.status?.feil && <> · <strong>Feil ved siste forsøk:</strong> {k.status.feil}</>}
+      </p>
+    </div>
+  ))}
+
+  <h3>Kategorisering er automatisk og kan bomme</h3>
+  <p>
+    Kategori (idrett/kultur/frivillighet) og aldersgruppe (barn/unge/voksne) settes av et enkelt regelsett basert på
+    bransjekode og nøkkelord i navn/beskrivelse — det er <em>ikke</em> verifisert av et menneske for hvert tilbud.
+    Et lag kan derfor havne i feil kategori, eller vises for alle aldersgrupper når det egentlig retter seg mot én.
+    Oppdages en feil kan den rettes permanent ved å legge inn en overstyring i <code>src/data/overrides.json</code>
+    i kildekoden, nøkkelet på organisasjonsnummer eller tilbudets id.
+  </p>
+
+  <h3>Foreslå et tilbud eller meld en feil</h3>
+  <p>
+    Mangler et tilbud, eller er noe feil? Opprett en sak i prosjektets kildekode-repo, så kan det legges inn i
+    <code>manual-tilbud.json</code> eller rettes via <code>overrides.json</code>:
+  </p>
+  <p>
+    <a href={`${REPO_URL}/issues/new?template=foresla-tilbud.md`} target="_blank" rel="noopener">
+      Foreslå et tilbud på GitHub →
+    </a>
+  </p>
+
+  <h3>Hvordan oppdateringen fungerer</h3>
+  <p>
+    En planlagt GitHub Action kjører datahentingsskriptet med jevne mellomrom (og kan også kjøres manuelt). Endrer
+    dataene seg, committes de automatisk, og en byggejobb publiserer den oppdaterte siden på nytt. Feiler én kilde
+    midlertidig, beholdes forrige kjørings data for akkurat den kilden i stedet for at hele listen tømmes.
+  </p>
+</Layout>

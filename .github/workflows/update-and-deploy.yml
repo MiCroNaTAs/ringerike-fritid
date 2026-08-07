@@ -1,0 +1,71 @@
+name: Oppdater fritidstilbud og publiser
+
+on:
+  schedule:
+    # Kjører daglig kl. 05:00 UTC (ca. 06-07 norsk tid, avhengig av sommertid).
+    - cron: '0 5 * * *'
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+# Unngår at to samtidige publiseringer krasjer i hverandre.
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  oppdater-og-publiser:
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Sjekk ut kode
+        uses: actions/checkout@v4
+
+      - name: Sett opp Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Installer avhengigheter
+        run: npm ci
+
+      - name: Hent oppdaterte fritidstilbud fra kildene
+        run: npm run fetch-data
+
+      - name: Commit oppdaterte data (hvis noe har endret seg)
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          if ! git diff --quiet -- src/data/tilbud.json src/data/meta.json; then
+            git add src/data/tilbud.json src/data/meta.json
+            git commit -m "Automatisk oppdatering av fritidstilbud"
+            git push
+          else
+            echo "Ingen endringer i dataene siden forrige kjøring."
+          fi
+
+      - name: Bygg nettsiden
+        run: npm run build
+        env:
+          SITE_URL: https://${{ github.repository_owner }}.github.io
+          SITE_BASE: /${{ github.event.repository.name || 'ringerike-fritid' }}
+
+      - name: Sett opp GitHub Pages
+        uses: actions/configure-pages@v5
+
+      - name: Last opp bygg-artefakt
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: dist
+
+      - name: Publiser til GitHub Pages
+        id: deployment
+        uses: actions/deploy-pages@v4
