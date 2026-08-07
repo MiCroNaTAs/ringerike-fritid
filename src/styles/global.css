@@ -199,6 +199,14 @@ button.chip[aria-pressed='true'] {
   margin-top: auto;
 }
 
+.tilbud-card .search-links {
+  margin-top: auto;
+}
+
+.tilbud-card .search-links a {
+  margin-left: 0.3rem;
+}
+
 .empty-state {
   border: 1px dashed var(--border);
   border-radius: var(--radius);

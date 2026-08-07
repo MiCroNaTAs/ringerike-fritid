@@ -90,9 +90,9 @@ const KEYWORD_KATEGORI = [
 ];
 
 const ALDERSGRUPPE_KEYWORD = [
-  { gruppe: 'barn', ord: ['barn', 'junior', 'familie', '4h'] },
-  { gruppe: 'unge', ord: ['ungdom', 'unge', 'ungdomsklubb', 'russ'] },
-  { gruppe: 'voksne', ord: ['senior', 'pensjonist', 'eldre', 'voksne'] },
+  { gruppe: 'barn', ord: ['barn', 'junior', 'familie', '4h', 'miniputt', 'lillegutt', 'lillejente', 'aktivitetsskole', 'sfo', 'barnehage'] },
+  { gruppe: 'unge', ord: ['ungdom', 'unge', 'ungdomsklubb', 'russ', 'speider', 'korps', '4h', 'skolekorps', 'guttemusikk', 'jenteguide'] },
+  { gruppe: 'voksne', ord: ['senior', 'pensjonist', 'eldre', 'voksne', 'veteran', 'oldboys', 'old boys', 'oldgirls', 'old girls'] },
 ];
 
 function kategoriserFraNaeringskode(naeringskode) {

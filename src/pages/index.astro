@@ -60,6 +60,9 @@ const base = BASE_URL;
         <button type="button" class="chip" data-value={value} aria-pressed="false">{label}</button>
       ))}
     </div>
+    <p class="meta-line">
+      Aldersgruppe er anslått ut fra navnet på tilbudet og kan være unøyaktig. De fleste lag og foreninger er åpne for alle aldre, så mange vises under alle tre.
+    </p>
   </div>
 
   <p class="result-count" id="result-count">Viser {tilbud.length} av {tilbud.length} tilbud</p>
@@ -88,7 +91,15 @@ const base = BASE_URL;
           {t.nettside && (
             <a class="website" href={t.nettside} target="_blank" rel="noopener">Besøk nettsted →</a>
           )}
-          {!t.nettside && t.kildeUrl && (
+          {!t.nettside && (
+            <p class="meta-line search-links">
+              Fant ingen registrert nettside —
+              <a href={`https://www.google.com/search?q=${encodeURIComponent(t.navn + ' ' + (t.poststed ?? 'Ringerike'))}`} target="_blank" rel="noopener">søk på Google</a>
+              ·
+              <a href={`https://www.facebook.com/search/pages/?q=${encodeURIComponent(t.navn)}`} target="_blank" rel="noopener">søk på Facebook</a>
+            </p>
+          )}
+          {t.kildeUrl && (
             <a class="website" href={t.kildeUrl} target="_blank" rel="noopener">Se i register →</a>
           )}
         </article>
