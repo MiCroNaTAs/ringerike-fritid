@@ -2,6 +2,7 @@
 import Layout from '../layouts/Layout.astro';
 import tilbud from '../data/tilbud.json';
 import meta from '../data/meta.json';
+import { BASE_URL } from '../site';
 
 const KATEGORI_LABEL: Record<string, string> = {
   idrett: 'Idrett',
@@ -30,13 +31,15 @@ function formatDato(iso: string | null): string {
     timeZone: 'Europe/Oslo',
   });
 }
+
+const base = BASE_URL;
 ---
 
 <Layout title="Fritid i Ringerike – oversikt over fritidstilbud">
   <p class="intro">
     Samlet oversikt over lag, foreninger og fritidstilbud for barn, unge og voksne i Ringerike kommune.
     Listen hentes automatisk fra <a href="https://www.brreg.no/produkt/frivillighetsregisteret/" target="_blank" rel="noopener">Frivillighetsregisteret</a>
-    og Ringerike kommunes nettsider, og suppleres med manuelt lagt-til tilbud. Se <a href={`${import.meta.env.BASE_URL}om/`}>hvordan dette fungerer</a>.
+    og Ringerike kommunes nettsider, og suppleres med manuelt lagt-til tilbud. Se <a href={`${base}om/`}>hvordan dette fungerer</a>.
   </p>
 
   <p class="result-count" id="last-updated">Sist oppdatert: {formatDato(meta.sistOppdatert)} · {tilbud.length} tilbud totalt</p>
@@ -64,7 +67,7 @@ function formatDato(iso: string | null): string {
   {tilbud.length === 0 ? (
     <div class="empty-state">
       <p>Ingen tilbud er hentet enda. Den automatiske oppdateringen har ikke kjørt, eller kildene ga ingen treff.</p>
-      <p>Se <a href={`${import.meta.env.BASE_URL}om/`}>Om siden</a> for status på datakildene.</p>
+      <p>Se <a href={`${base}om/`}>Om siden</a> for status på datakildene.</p>
     </div>
   ) : (
     <div class="tilbud-grid" id="tilbud-grid">
