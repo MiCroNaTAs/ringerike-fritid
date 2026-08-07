@@ -35,16 +35,46 @@ Astro-sidene (src/pages/*.astro) leser disse filene ved bygg
 - **Manuelle tilbud**: legg til i `src/data/manual-tilbud.json` (se
   `src/data/manual-tilbud.example.json` for format). Nyttig for tilbud som ikke er egne
   juridiske enheter (f.eks. en fritidsklubb drevet av kommunen).
+- **Automatisk lenkesøk**: for tilbud uten registrert nettside forsøker
+  `scripts/fetch-data.mjs` å finne en nettside eller Facebook-side automatisk via Googles
+  Custom Search API. Krever oppsett, se under. Uten oppsett hoppes dette steget bare over.
 
 Kategori og aldersgruppe settes av enkle nøkkelord-/bransjekode-heuristikker i
 `scripts/fetch-data.mjs` — det er **ikke** verifisert manuelt for hvert tilbud. Feil kan
 rettes permanent via `src/data/overrides.json` (nøkkel: `orgnr:<organisasjonsnummer>` eller
 tilbudets `id`).
 
+## Sette opp automatisk lenkesøk (valgfritt)
+
+Dette gir automatisk oppslag av nettsted/Facebook-side for tilbud som mangler det, via
+Googles Custom Search JSON API (gratis opptil 100 søk/dag — skriptet bruker maks 80/dag
+for å ha litt margin).
+
+1. Gå til [Programmable Search Engine](https://programmablesearchengine.google.com/controlpanel/create)
+   og opprett et nytt søk. Skru på **"Search the entire web"**. Kopier **Search engine ID**
+   (kalles `cx`).
+2. Gå til [Google Cloud Console](https://console.cloud.google.com/apis/library/customsearch.googleapis.com),
+   opprett et prosjekt om du ikke har et fra før, og **aktiver "Custom Search API"**.
+3. Under **Credentials**, opprett en **API-nøkkel**.
+4. I GitHub-repoet: **Settings → Secrets and variables → Actions → New repository secret**,
+   legg til to hemmeligheter:
+   - `GOOGLE_API_KEY` — API-nøkkelen fra steg 3
+   - `GOOGLE_CSE_ID` — søkemotor-IDen (`cx`) fra steg 1
+5. Ferdig — neste kjøring av workflowen plukker dem opp automatisk. Status vises på
+   "Om siden" (antall søkt/funnet per kjøring).
+
+Uten disse to secretsene hopper skriptet rett og slett over lenkesøket og fungerer som før.
+Et treff må matche minst halvparten av ordene i tilbudets navn og ikke komme fra et
+bedriftsregister/oppslagsverk for å bli godtatt — usikre treff droppes heller enn å vise
+feil lenke. Resultatet caches i `src/data/lenke-cache.json` slik at samme tilbud ikke
+slår opp på nytt hver dag.
+
 ## Kjøre lokalt
 
 ```bash
 npm install
+export GOOGLE_API_KEY=...   # valgfritt, se "Sette opp automatisk lenkesøk" over
+export GOOGLE_CSE_ID=...    # valgfritt
 npm run fetch-data   # henter ferske data (krever nettilgang til data.brreg.no og
                       # ringerike.kommune.no)
 npm run dev           # utviklingsserver på http://localhost:4321

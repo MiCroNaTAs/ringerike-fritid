@@ -23,6 +23,17 @@ const KILDE_LABEL: Record<string, string> = {
   manuell: 'Manuelt lagt til',
 };
 
+function nettstedTekst(url: string): string {
+  try {
+    const vertsnavn = new URL(url).hostname.replace(/^www\./, '');
+    if (vertsnavn === 'facebook.com' || vertsnavn.endsWith('.facebook.com')) return 'Besøk Facebook-side →';
+    if (vertsnavn === 'instagram.com' || vertsnavn.endsWith('.instagram.com')) return 'Besøk Instagram-side →';
+  } catch {
+    // ignorer - bruk standardtekst
+  }
+  return 'Besøk nettsted →';
+}
+
 function formatDato(iso: string | null): string {
   if (!iso) return 'aldri (ingen automatisk oppdatering har kjørt enda)';
   return new Date(iso).toLocaleString('nb-NO', {
@@ -89,7 +100,7 @@ const base = BASE_URL;
           {t.poststed && <p class="meta-line">{[t.adresse, t.poststed].filter(Boolean).join(', ')}</p>}
           {t.beskrivelse && <p class="desc">{t.beskrivelse}</p>}
           {t.nettside && (
-            <a class="website" href={t.nettside} target="_blank" rel="noopener">Besøk nettsted →</a>
+            <a class="website" href={t.nettside} target="_blank" rel="noopener">{nettstedTekst(t.nettside)}</a>
           )}
           {!t.nettside && (
             <p class="meta-line search-links">

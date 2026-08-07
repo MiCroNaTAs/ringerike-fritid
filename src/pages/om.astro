@@ -29,6 +29,8 @@ const kilder = [
     status: meta.kilder.manuell,
   },
 ];
+
+const lenkesok = meta.kilder.lenkesok ?? { aktivert: false, sokt: 0, funnet: 0, feil: null };
 ---
 
 <Layout title="Om siden – Fritid i Ringerike" description="Kilder, metode og begrensninger for oversikten over fritidstilbud i Ringerike kommune.">
@@ -51,6 +53,24 @@ const kilder = [
       </p>
     </div>
   ))}
+
+  <h3>Automatisk lenkesøk</h3>
+  <p>
+    Frivillighetsregisteret inneholder ikke nettside, e-post eller telefon. For tilbud uten registrert nettside
+    forsøker vi derfor å finne en kandidatlenke automatisk (nettsted eller Facebook-side) via Googles Custom Search
+    API. Et treff godtas kun hvis domenet ikke er et bedriftsregister/oppslagsverk, og minst halvparten av ordene i
+    navnet finnes igjen i tittelen eller beskrivelsen til treffet — usikre treff hoppes rett og slett over. Søket
+    er begrenset til {' '}80 oppslag per dag for å holde seg innenfor Googles gratiskvote, så det kan ta noen dager
+    før alle tilbud er gjennomgått. Finner søket ingenting, prøves det samme tilbudet igjen etter et halvt år.
+  </p>
+  {lenkesok.aktivert ? (
+    <p class="meta-line">
+      Søkte på {lenkesok.sokt} tilbud i siste kjøring, fant lenke for {lenkesok.funnet}.
+      {lenkesok.feil && <> · <strong>Feil:</strong> {lenkesok.feil}</>}
+    </p>
+  ) : (
+    <p class="meta-line">Ikke aktivert — GOOGLE_API_KEY/GOOGLE_CSE_ID er ikke satt opp for dette repoet enda.</p>
+  )}
 
   <h3>Kategorisering er automatisk og kan bomme</h3>
   <p>
