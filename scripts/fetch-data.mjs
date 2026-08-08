@@ -272,53 +272,56 @@ async function hentManuelleTilbud() {
 const SERPER_URL = 'https://google.serper.dev/search';
 const SOK_PER_KJORING = 40; // bevarer kreditter - fullt gjennomsyn av ~400 tilbud tar da ca. 10 kjøringer
 const RETRY_ETTER_MS = 180 * 24 * 60 * 60 * 1000; // prøv igjen etter et halvt år hvis ingenting ble funnet
-// Norske bedriftsoppslag-/telefonkatalog-/kredittopplysningstjenester. Disse dukker ofte
-// opp som topptreff for et organisasjonsnavn, men viser bare generisk registerdata
-// (org.nr, adresse) - aldri noe tilbudet selv har publisert. Ekskluderes både i selve
-// søket (-site:) og som en siste sjekk på treffet.
-const UTELUKKEDE_DOMENER = [
-  'proff.no', 'purehelp.no', '1881.no', '1850.no', 'gulesider.no', 'brreg.no',
-  'virksomhet.brreg.no', 'data.brreg.no', 'regnskapstall.no', 'bedriftsdatabasen.no',
-  'rosa.no', 'byndle.no', 'merinfo.no', 'listings.no', 'bisnode.no', 'soliditet.no',
-  'kredittopplysning.no', 'firmaregister.no', 'bedriftsguiden.no', 'yra.no',
-  'firmadatabasen.no', 'enlist.no', 'lokalebedrifter.no', 'wikipedia.org',
-];
 
-const SITE_EKSKLUDERING = UTELUKKEDE_DOMENER.map((d) => `-site:${d}`).join(' ');
+// Norge har et utall bedriftsoppslag-/telefonkatalog-/kredittinformasjonstjenester
+// (proff.no, 1881.no, 1850.no, 1890.no, 180.no, infobel, tracxn, vexter, bedriftsoversikten,
+// firmalisten, vat-search, osv.) som dominerer søketreff for ethvert organisasjonsnavn.
+// Å svarteliste dem én etter én er et tapt spill - det dukker stadig opp nye. Løsningen
+// er i stedet et positivt krav: et ekte nettsted har (nesten) alltid navnet sitt et sted
+// i domenet, det har aldri en generisk oppslagstjeneste, uansett hvem man søker på.
+const SOSIALE_MEDIER_DOMENER = ['facebook.com', 'instagram.com'];
+const STOPPORD = new Set(['og', 'av', 'for', 'til', 'med', 'lag', 'gruppe', 'forening', 'klubb', 'lokallag']);
 
-function domenetErUtelukket(url) {
+function translittererNorsk(tekst) {
+  return tekst.toLowerCase().replace(/æ/g, 'ae').replace(/ø/g, 'o').replace(/å/g, 'a');
+}
+
+function meningsbaerendeOrd(navn) {
+  return translittererNorsk(navn)
+    .replace(/[^a-z0-9 ]/g, '')
+    .split(/\s+/)
+    .filter((o) => o.length > 3 && !STOPPORD.has(o));
+}
+
+function erGodtTreff(navn, item, alleredeBrukteLenker) {
   let domene;
   try {
-    domene = new URL(url).hostname.replace(/^www\./, '');
+    domene = new URL(item.link).hostname.replace(/^www\./, '');
   } catch {
-    return true;
+    return false;
   }
-  return UTELUKKEDE_DOMENER.some((d) => domene === d || domene.endsWith(`.${d}`));
+  if (alleredeBrukteLenker.has(item.link)) return false; // sannsynligvis en generisk oversiktsside
+
+  const ord = meningsbaerendeOrd(navn);
+  if (ord.length === 0) return false;
+
+  const erSosialtMedie = SOSIALE_MEDIER_DOMENER.some((d) => domene === d || domene.endsWith(`.${d}`));
+  if (erSosialtMedie) {
+    // Domenet inneholder aldri orgnavnet for sosiale medier - sjekk tittel/beskrivelse i stedet
+    const tekst = translittererNorsk(`${item.title} ${item.snippet ?? ''}`);
+    const treffAntall = ord.filter((o) => tekst.includes(o)).length;
+    return treffAntall / ord.length >= 0.5;
+  }
+
+  const domeneNavn = domene.replace(/\.[a-z]{2,}(\.[a-z]{2,})?$/, '').replace(/[^a-z0-9]/g, '');
+  return ord.some((o) => domeneNavn.includes(o));
 }
 
-function erGodtTreff(navn, item) {
-  if (domenetErUtelukket(item.link)) return false;
-  const navnOrd = navn
-    .toLowerCase()
-    .replace(/[^a-zæøå0-9 ]/gi, '')
-    .split(/\s+/)
-    .filter((o) => o.length > 2);
-  if (navnOrd.length === 0) return false;
-  const tekst = `${item.title} ${item.snippet ?? ''}`.toLowerCase();
-  const treffAntall = navnOrd.filter((o) => tekst.includes(o)).length;
-  return treffAntall / navnOrd.length >= 0.5;
-}
-
-async function sokEtterNettside(tilbud, apiKey) {
+async function sokEtterNettside(tilbud, apiKey, alleredeBrukteLenker) {
   const res = await fetchWithTimeout(SERPER_URL, {
     method: 'POST',
     headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-    body: JSON.stringify({
-      q: `${tilbud.navn} ${tilbud.poststed ?? 'Ringerike'} ${SITE_EKSKLUDERING}`,
-      gl: 'no',
-      hl: 'no',
-      num: 8,
-    }),
+    body: JSON.stringify({ q: `${tilbud.navn} ${tilbud.poststed ?? 'Ringerike'}`, gl: 'no', hl: 'no', num: 8 }),
   });
   if (!res.ok) {
     if (res.status === 401 || res.status === 403) throw new Error('Ugyldig SERPER_API_KEY');
@@ -327,7 +330,7 @@ async function sokEtterNettside(tilbud, apiKey) {
   }
   const json = await res.json();
   const treffliste = json.organic ?? [];
-  const treff = treffliste.find((item) => erGodtTreff(tilbud.navn, item));
+  const treff = treffliste.find((item) => erGodtTreff(tilbud.navn, item, alleredeBrukteLenker));
   return treff?.link ?? null;
 }
 
@@ -340,6 +343,10 @@ async function berikMedLenker(alleTilbud) {
     console.log('[lenkesøk] Hopper over - SERPER_API_KEY er ikke satt');
     return { alleTilbud, status };
   }
+
+  // En lenke som allerede er brukt av et annet tilbud er nesten alltid en generisk
+  // oversiktsside (f.eks. kommunens "lag og foreninger"-liste), ikke en reell nettside.
+  const alleredeBrukteLenker = new Set(Object.values(cache).map((c) => c.nettside).filter(Boolean));
 
   const naa = Date.now();
 
@@ -358,10 +365,11 @@ async function berikMedLenker(alleTilbud) {
 
     status.sokt += 1;
     try {
-      const funnetLenke = await sokEtterNettside(tilbud, apiKey);
+      const funnetLenke = await sokEtterNettside(tilbud, apiKey, alleredeBrukteLenker);
       cache[tilbud.id] = { nettside: funnetLenke, sistSokt: new Date(naa).toISOString() };
       if (funnetLenke) {
         tilbud.nettside = funnetLenke;
+        alleredeBrukteLenker.add(funnetLenke);
         status.funnet += 1;
       }
     } catch (err) {
