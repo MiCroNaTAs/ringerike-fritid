@@ -29,6 +29,8 @@ const kilder = [
     status: meta.kilder.manuell,
   },
 ];
+
+const lenkesok = meta.kilder.lenkesok ?? { aktivert: false, sokt: 0, funnet: 0, feil: null };
 ---
 
 <Layout title="Om siden – Fritid i Ringerike" description="Kilder, metode og begrensninger for oversikten over fritidstilbud i Ringerike kommune.">
@@ -52,14 +54,23 @@ const kilder = [
     </div>
   ))}
 
-  <h3>Manglende nettsider</h3>
+  <h3>Automatisk lenkesøk</h3>
   <p>
-    Frivillighetsregisteret inneholder ikke nettside, e-post eller telefon, så de fleste tilbud herfra mangler en
-    direkte lenke. Vi har vurdert å slå opp dette automatisk via et søke-API, men Google stengte sin gratis
-    "søk på hele nettet"-løsning for nye prosjekter i 2025/2026, og en pålitelig, gratis erstatning finnes ikke per
-    nå. I stedet viser hvert slikt tilbud en direkte Google- og Facebook-søkelenke med navnet forhåndsutfylt, slik
-    at du kan finne frem selv med ett klikk — det er tryggere enn at systemet gjetter feil lenke.
+    Frivillighetsregisteret inneholder ikke nettside, e-post eller telefon. For tilbud uten registrert nettside
+    forsøker vi derfor å finne en kandidatlenke automatisk (nettsted, Facebook eller Instagram) via Serper.dev, en
+    tredjeparts søke-API. Et treff godtas kun hvis domenet ikke er et bedriftsregister/oppslagsverk, og minst
+    halvparten av ordene i navnet finnes igjen i tittelen eller beskrivelsen til treffet — usikre treff hoppes rett
+    og slett over, og tilbudet viser i stedet en søkelenke slik at du kan sjekke selv. Søket er begrenset til 40
+    oppslag per kjøring for å bevare søke-kreditter, så det kan ta noen dager før alle tilbud er gjennomgått.
   </p>
+  {lenkesok.aktivert ? (
+    <p class="meta-line">
+      Søkte på {lenkesok.sokt} tilbud i siste kjøring, fant lenke for {lenkesok.funnet}.
+      {lenkesok.feil && <> · <strong>Feil:</strong> {lenkesok.feil}</>}
+    </p>
+  ) : (
+    <p class="meta-line">Ikke aktivert — SERPER_API_KEY er ikke satt opp for dette repoet enda.</p>
+  )}
 
   <h3>Kategorisering er automatisk og kan bomme</h3>
   <p>

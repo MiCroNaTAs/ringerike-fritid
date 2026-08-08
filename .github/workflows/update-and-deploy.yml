@@ -39,13 +39,15 @@ jobs:
 
       - name: Hent oppdaterte fritidstilbud fra kildene
         run: npm run fetch-data
+        env:
+          SERPER_API_KEY: ${{ secrets.SERPER_API_KEY }}
 
       - name: Commit oppdaterte data (hvis noe har endret seg)
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          if ! git diff --quiet -- src/data/tilbud.json src/data/meta.json; then
-            git add src/data/tilbud.json src/data/meta.json
+          if ! git diff --quiet -- src/data/tilbud.json src/data/meta.json src/data/lenke-cache.json; then
+            git add src/data/tilbud.json src/data/meta.json src/data/lenke-cache.json
             git commit -m "Automatisk oppdatering av fritidstilbud"
             git push
           else
