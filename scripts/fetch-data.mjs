@@ -22,7 +22,6 @@ const TILBUD_PATH = path.join(DATA_DIR, 'tilbud.json');
 const META_PATH = path.join(DATA_DIR, 'meta.json');
 const MANUAL_PATH = path.join(DATA_DIR, 'manual-tilbud.json');
 const OVERRIDES_PATH = path.join(DATA_DIR, 'overrides.json');
-const LENKE_CACHE_PATH = path.join(DATA_DIR, 'lenke-cache.json');
 
 const KOMMUNENUMMER = '3305'; // Ringerike kommune (gjeldende nummer siden 2024-01-01)
 const BRREG_API = 'https://data.brreg.no/enhetsregisteret/api/enheter';
@@ -67,10 +66,6 @@ async function readJson(filePath, fallback) {
     if (err.code === 'ENOENT') return fallback;
     throw err;
   }
-}
-
-function sleep(ms) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 // --- Kategorisering (heuristisk, kan overstyres per organisasjonsnummer i overrides.json) ---
@@ -260,113 +255,6 @@ async function hentManuelleTilbud() {
   }));
 }
 
-// --- Kilde 4: Automatisk lenkesøk via Google Custom Search (nettsted/Facebook) ---
-//
-// Frivillighetsregisteret inneholder ikke kontaktinfo, så vi mangler nettside for
-// de fleste tilbud derfra. Dette søker opp en kandidatlenke automatisk, men kun
-// hvis GOOGLE_API_KEY/GOOGLE_CSE_ID er satt (krever en gratis Google-konto, se
-// README). Uten disse hoppes steget helt over — resten av skriptet fungerer som
-// før. Resultatet caches i lenke-cache.json slik at vi ikke bruker mer av det
-// gratis daglige søkekvoten (100/dag) enn nødvendig, og ikke leter etter det
-// samme tilbudet på nytt hver eneste dag.
-
-const GOOGLE_SOK_URL = 'https://www.googleapis.com/customsearch/v1';
-const DAGLIG_SOKGRENSE = 80; // holder god margin under Googles gratis kvote på 100/dag
-const RETRY_ETTER_MS = 180 * 24 * 60 * 60 * 1000; // prøv igjen etter ca. et halvt år hvis ingenting ble funnet
-const UTELUKKEDE_DOMENER = [
-  'proff.no', 'purehelp.no', '1881.no', 'gulesider.no', 'brreg.no',
-  'virksomhet.brreg.no', 'data.brreg.no', 'regnskapstall.no', 'bedriftsdatabasen.no',
-  'wikipedia.org',
-];
-
-function domenetErUtelukket(url) {
-  let domene;
-  try {
-    domene = new URL(url).hostname.replace(/^www\./, '');
-  } catch {
-    return true;
-  }
-  return UTELUKKEDE_DOMENER.some((d) => domene === d || domene.endsWith(`.${d}`));
-}
-
-function erGodtTreff(navn, item) {
-  if (domenetErUtelukket(item.link)) return false;
-  const navnOrd = navn
-    .toLowerCase()
-    .replace(/[^a-zæøå0-9 ]/gi, '')
-    .split(/\s+/)
-    .filter((o) => o.length > 2);
-  if (navnOrd.length === 0) return false;
-  const tekst = `${item.title} ${item.snippet ?? ''}`.toLowerCase();
-  const treffAntall = navnOrd.filter((o) => tekst.includes(o)).length;
-  return treffAntall / navnOrd.length >= 0.5;
-}
-
-async function sokEtterNettside(tilbud, apiKey, cx) {
-  const url = new URL(GOOGLE_SOK_URL);
-  url.searchParams.set('key', apiKey);
-  url.searchParams.set('cx', cx);
-  url.searchParams.set('q', `${tilbud.navn} ${tilbud.poststed ?? 'Ringerike'}`);
-  url.searchParams.set('num', '5');
-
-  const res = await fetchWithTimeout(url);
-  if (!res.ok) {
-    if (res.status === 429) throw new Error('Google Custom Search-kvoten er brukt opp for i dag');
-    throw new Error(`Google Custom Search svarte ${res.status} ${res.statusText}`);
-  }
-  const json = await res.json();
-  const items = json.items ?? [];
-  const treff = items.find((item) => erGodtTreff(tilbud.navn, item));
-  return treff?.link ?? null;
-}
-
-async function berikMedLenker(alleTilbud) {
-  const apiKey = process.env.GOOGLE_API_KEY;
-  const cx = process.env.GOOGLE_CSE_ID;
-  const cache = await readJson(LENKE_CACHE_PATH, {});
-  const status = { aktivert: Boolean(apiKey && cx), sokt: 0, funnet: 0, feil: null };
-
-  if (!status.aktivert) {
-    console.log('[lenkesøk] Hopper over - GOOGLE_API_KEY/GOOGLE_CSE_ID er ikke satt');
-    return { alleTilbud, status };
-  }
-
-  const naa = Date.now();
-
-  for (const tilbud of alleTilbud) {
-    if (tilbud.nettside) continue;
-
-    const cacheOppslag = cache[tilbud.id];
-    if (cacheOppslag?.nettside) {
-      tilbud.nettside = cacheOppslag.nettside;
-      continue;
-    }
-    if (cacheOppslag && naa - new Date(cacheOppslag.sistSokt).getTime() < RETRY_ETTER_MS) {
-      continue;
-    }
-    if (status.sokt >= DAGLIG_SOKGRENSE) continue;
-
-    status.sokt += 1;
-    try {
-      const funnetLenke = await sokEtterNettside(tilbud, apiKey, cx);
-      cache[tilbud.id] = { nettside: funnetLenke, sistSokt: new Date(naa).toISOString() };
-      if (funnetLenke) {
-        tilbud.nettside = funnetLenke;
-        status.funnet += 1;
-      }
-    } catch (err) {
-      console.error(`[lenkesøk] Feilet for "${tilbud.navn}":`, err.message);
-      status.feil = err.message;
-      break; // sannsynligvis kvote/nettverksfeil - ikke fortsett å kaste bort forsøk
-    }
-    await sleep(150); // vær snill mot API-et
-  }
-
-  await writeFile(LENKE_CACHE_PATH, JSON.stringify(cache, null, 2) + '\n', 'utf-8');
-  console.log(`[lenkesøk] Søkte på ${status.sokt}, fant lenke for ${status.funnet}`);
-  return { alleTilbud, status };
-}
-
 // --- Overstyringer (rettelser per id/organisasjonsnummer) ---
 
 function anvendOverstyringer(tilbud, overstyringer) {
@@ -389,7 +277,6 @@ async function main() {
       frivillighetsregisteret: { antall: 0, hentet: null, feil: null },
       ringerikeKommune: { antall: 0, hentet: null, feil: null },
       manuell: { antall: 0, hentet: null, feil: null },
-      lenkesok: { aktivert: false, sokt: 0, funnet: 0, feil: null },
     },
   });
   const overstyringer = await readJson(OVERRIDES_PATH, {});
@@ -442,11 +329,6 @@ async function main() {
   ];
 
   alleTilbud = anvendOverstyringer(alleTilbud, overstyringer);
-
-  const lenkeResultat = await berikMedLenker(alleTilbud);
-  alleTilbud = lenkeResultat.alleTilbud;
-  meta.kilder.lenkesok = lenkeResultat.status;
-
   alleTilbud.sort((a, b) => a.navn.localeCompare(b.navn, 'nb'));
 
   meta.antallTotalt = alleTilbud.length;
