@@ -272,11 +272,19 @@ async function hentManuelleTilbud() {
 const SERPER_URL = 'https://google.serper.dev/search';
 const SOK_PER_KJORING = 40; // bevarer kreditter - fullt gjennomsyn av ~400 tilbud tar da ca. 10 kjøringer
 const RETRY_ETTER_MS = 180 * 24 * 60 * 60 * 1000; // prøv igjen etter et halvt år hvis ingenting ble funnet
+// Norske bedriftsoppslag-/telefonkatalog-/kredittopplysningstjenester. Disse dukker ofte
+// opp som topptreff for et organisasjonsnavn, men viser bare generisk registerdata
+// (org.nr, adresse) - aldri noe tilbudet selv har publisert. Ekskluderes både i selve
+// søket (-site:) og som en siste sjekk på treffet.
 const UTELUKKEDE_DOMENER = [
-  'proff.no', 'purehelp.no', '1881.no', 'gulesider.no', 'brreg.no',
+  'proff.no', 'purehelp.no', '1881.no', '1850.no', 'gulesider.no', 'brreg.no',
   'virksomhet.brreg.no', 'data.brreg.no', 'regnskapstall.no', 'bedriftsdatabasen.no',
-  'wikipedia.org',
+  'rosa.no', 'byndle.no', 'merinfo.no', 'listings.no', 'bisnode.no', 'soliditet.no',
+  'kredittopplysning.no', 'firmaregister.no', 'bedriftsguiden.no', 'yra.no',
+  'firmadatabasen.no', 'enlist.no', 'lokalebedrifter.no', 'wikipedia.org',
 ];
+
+const SITE_EKSKLUDERING = UTELUKKEDE_DOMENER.map((d) => `-site:${d}`).join(' ');
 
 function domenetErUtelukket(url) {
   let domene;
@@ -305,7 +313,12 @@ async function sokEtterNettside(tilbud, apiKey) {
   const res = await fetchWithTimeout(SERPER_URL, {
     method: 'POST',
     headers: { 'X-API-KEY': apiKey, 'Content-Type': 'application/json' },
-    body: JSON.stringify({ q: `${tilbud.navn} ${tilbud.poststed ?? 'Ringerike'}`, gl: 'no', hl: 'no', num: 5 }),
+    body: JSON.stringify({
+      q: `${tilbud.navn} ${tilbud.poststed ?? 'Ringerike'} ${SITE_EKSKLUDERING}`,
+      gl: 'no',
+      hl: 'no',
+      num: 8,
+    }),
   });
   if (!res.ok) {
     if (res.status === 401 || res.status === 403) throw new Error('Ugyldig SERPER_API_KEY');
