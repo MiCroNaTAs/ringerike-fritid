@@ -3520,7 +3520,7 @@
       "unge",
       "voksne"
     ],
-    "adresse": "c/o Rune Skogmo, Maltkleiva 2",
+    "adresse": "c/o Bjørn Kåre Solem, Perhagan 5",
     "poststed": "3533 TYRISTRAND",
     "nettside": "https://tyristrand.lions.no/",
     "epost": null,
@@ -8152,6 +8152,25 @@
     "organisasjonsnummer": "936230822",
     "kilde": "frivillighetsregisteret",
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/936230822"
+  },
+  {
+    "id": "brreg-993387487",
+    "navn": "VENNER AV RINGERIKE SYKEHUS",
+    "beskrivelse": "Andre sosialtjenester uten botilbud ellers",
+    "kategori": "frivillighet",
+    "aldersgruppe": [
+      "barn",
+      "unge",
+      "voksne"
+    ],
+    "adresse": "c/o Eli Vik, Heradsbygdveien 110",
+    "poststed": "3518 HØNEFOSS",
+    "nettside": "https://www.facebook.com/ringerikesykehus/posts/gj%C3%B8r-klart-til-17-mai-en-stor-dugnadsgjeng-fra-venner-av-ringerike-sykehus-var-i/5969152556472496/",
+    "epost": null,
+    "telefon": null,
+    "organisasjonsnummer": "993387487",
+    "kilde": "frivillighetsregisteret",
+    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/993387487"
   },
   {
     "id": "brreg-994884212",
