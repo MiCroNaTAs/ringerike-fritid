@@ -4246,6 +4246,23 @@
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/991275940"
   },
   {
+    "id": "brreg-993152315",
+    "navn": "NOREMA SENIORKLUBB",
+    "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
+    "kategori": "frivillighet",
+    "aldersgruppe": [
+      "voksne"
+    ],
+    "adresse": "c/o Åse Rigmor Skagnæs, Ultvetveien 30",
+    "poststed": "3512 HØNEFOSS",
+    "nettside": "https://www.norema.no/",
+    "epost": null,
+    "telefon": null,
+    "organisasjonsnummer": "993152315",
+    "kilde": "frivillighetsregisteret",
+    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/993152315"
+  },
+  {
     "id": "brreg-983406505",
     "navn": "NORGES ASTMA- OG ALLERGIFORBUND RINGERIKE OG JEVNAKER LOKALLAG",
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
