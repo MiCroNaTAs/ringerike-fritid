@@ -1939,6 +1939,25 @@
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/916666942"
   },
   {
+    "id": "brreg-924880406",
+    "navn": "HENGAW ORGANIZATION FOR HUMAN RIGHTS",
+    "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
+    "kategori": "frivillighet",
+    "aldersgruppe": [
+      "barn",
+      "unge",
+      "voksne"
+    ],
+    "adresse": null,
+    "poststed": null,
+    "nettside": "https://hengaw.net/en",
+    "epost": null,
+    "telefon": null,
+    "organisasjonsnummer": "924880406",
+    "kilde": "frivillighetsregisteret",
+    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/924880406"
+  },
+  {
     "id": "brreg-915199488",
     "navn": "HERADSBYGDA HÅNDBALLKLUBB",
     "beskrivelse": "Aktiviteter i idrettslag og -klubber",
