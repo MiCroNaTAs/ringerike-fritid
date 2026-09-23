@@ -7033,25 +7033,6 @@
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/996440877"
   },
   {
-    "id": "brreg-932513013",
-    "navn": "STERKERE SAMMEN RINGERIKE",
-    "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
-    "kategori": "frivillighet",
-    "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
-    ],
-    "adresse": "Hønen terrasse 15A",
-    "poststed": "3515 HØNEFOSS",
-    "nettside": null,
-    "epost": null,
-    "telefon": null,
-    "organisasjonsnummer": "932513013",
-    "kilde": "frivillighetsregisteret",
-    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/932513013"
-  },
-  {
     "id": "brreg-883793722",
     "navn": "STIFTELSEN BJERKELY LEIRSTED",
     "beskrivelse": "Aktiviteter i fond/legat som støtter veldedige og allmennyttige formål",
