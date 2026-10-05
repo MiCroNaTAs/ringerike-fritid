@@ -1696,6 +1696,25 @@
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/984046340"
   },
   {
+    "id": "brreg-938310610",
+    "navn": "GJENKLANG DIALOG",
+    "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
+    "kategori": "frivillighet",
+    "aldersgruppe": [
+      "barn",
+      "unge",
+      "voksne"
+    ],
+    "adresse": "v/Dagny G. Krogness, Anettes vei 20",
+    "poststed": "3518 HØNEFOSS",
+    "nettside": "https://www.dialogeiendom.no/meglerkontorer/honefoss-ringerike-hole/",
+    "epost": null,
+    "telefon": null,
+    "organisasjonsnummer": "938310610",
+    "kilde": "frivillighetsregisteret",
+    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/938310610"
+  },
+  {
     "id": "brreg-994014358",
     "navn": "GRØNVOLDSMOEN VEL",
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
