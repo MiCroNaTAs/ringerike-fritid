@@ -8152,25 +8152,6 @@
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/823976372"
   },
   {
-    "id": "brreg-923829121",
-    "navn": "VENNER AV HØNEFOSS SYKEHJEM",
-    "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
-    "kategori": "frivillighet",
-    "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
-    ],
-    "adresse": null,
-    "poststed": null,
-    "nettside": "https://www.facebook.com/ringblad/posts/i-l%C3%B8pet-av-noen-%C3%A5r-skal-ringerike-kommune-bygge-et-nytt-sykehjem-hvor-det-skal-l/1636314168496781/",
-    "epost": null,
-    "telefon": null,
-    "organisasjonsnummer": "923829121",
-    "kilde": "frivillighetsregisteret",
-    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/923829121"
-  },
-  {
     "id": "brreg-936230822",
     "navn": "VENNER AV RINGERIKE DEMENSKOR",
     "beskrivelse": "Utøvende kunstnerisk virksomhet og underholdningsvirksomhet innenfor musikk",
@@ -8264,23 +8245,6 @@
     "organisasjonsnummer": "931392999",
     "kilde": "frivillighetsregisteret",
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/931392999"
-  },
-  {
-    "id": "brreg-984041411",
-    "navn": "VIKER SANITETSFORENING",
-    "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
-    "kategori": "frivillighet",
-    "aldersgruppe": [
-      "barn"
-    ],
-    "adresse": "c/o Karianne Bakken Grøterud, Ådalsveien 727",
-    "poststed": "3525 HALLINGBY",
-    "nettside": null,
-    "epost": null,
-    "telefon": null,
-    "organisasjonsnummer": "984041411",
-    "kilde": "frivillighetsregisteret",
-    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/984041411"
   },
   {
     "id": "brreg-992612029",
