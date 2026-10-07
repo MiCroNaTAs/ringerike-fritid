@@ -6509,25 +6509,6 @@
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/935274230"
   },
   {
-    "id": "brreg-988202630",
-    "navn": "SCANAID",
-    "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
-    "kategori": "frivillighet",
-    "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
-    ],
-    "adresse": "c/o Tanja Tyberg, Lilleåsgata 4D",
-    "poststed": "3340 ÅMOT",
-    "nettside": "https://scanaid.no/kontakt-oss/",
-    "epost": null,
-    "telefon": null,
-    "organisasjonsnummer": "988202630",
-    "kilde": "frivillighetsregisteret",
-    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/988202630"
-  },
-  {
     "id": "brreg-830781072",
     "navn": "SEMMEN VEL",
     "beskrivelse": "Utleie av egen eller leid fast eiendom",
