@@ -1151,25 +1151,6 @@
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/976618793"
   },
   {
-    "id": "brreg-918755586",
-    "navn": "ENGAJAM",
-    "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
-    "kategori": "frivillighet",
-    "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
-    ],
-    "adresse": "c/o Marius Hansen, Myrveien 8",
-    "poststed": "3517 HØNEFOSS",
-    "nettside": null,
-    "epost": null,
-    "telefon": null,
-    "organisasjonsnummer": "918755586",
-    "kilde": "frivillighetsregisteret",
-    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/918755586"
-  },
-  {
     "id": "brreg-934377834",
     "navn": "ERTEBRÅTANVEIEN VEILAG",
     "beskrivelse": "Eiendomsforvaltning på oppdrag",
