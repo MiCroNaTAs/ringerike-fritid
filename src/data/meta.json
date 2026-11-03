@@ -1,20 +1,20 @@
 {
-  "sistOppdatert": "2026-11-02T13:09:30.548Z",
+  "sistOppdatert": "2026-11-03T12:38:27.067Z",
   "antallTotalt": 456,
   "kilder": {
     "frivillighetsregisteret": {
       "antall": 456,
-      "hentet": "2026-11-02T13:09:30.548Z",
+      "hentet": "2026-11-03T12:38:27.067Z",
       "feil": null
     },
     "ringerikeKommune": {
       "antall": 0,
-      "hentet": "2026-11-02T13:09:30.548Z",
+      "hentet": "2026-11-03T12:38:27.067Z",
       "feil": null
     },
     "manuell": {
       "antall": 0,
-      "hentet": "2026-11-02T13:09:30.548Z",
+      "hentet": "2026-11-03T12:38:27.067Z",
       "feil": null
     },
     "lenkesok": {
