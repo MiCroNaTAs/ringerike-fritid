@@ -4603,25 +4603,6 @@
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/995256347"
   },
   {
-    "id": "brreg-926399217",
-    "navn": "NORSKE GAMERE",
-    "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
-    "kategori": "frivillighet",
-    "aldersgruppe": [
-      "barn",
-      "unge",
-      "voksne"
-    ],
-    "adresse": "Lønnhaugveien 7",
-    "poststed": "3514 HØNEFOSS",
-    "nettside": null,
-    "epost": null,
-    "telefon": null,
-    "organisasjonsnummer": "926399217",
-    "kilde": "frivillighetsregisteret",
-    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/926399217"
-  },
-  {
     "id": "brreg-985842906",
     "navn": "NORSKE REDNINGSHUNDER RINGERIKE OG MODUM LAG",
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
