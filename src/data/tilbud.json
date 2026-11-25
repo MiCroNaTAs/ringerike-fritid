@@ -3986,6 +3986,25 @@
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/979404174"
   },
   {
+    "id": "brreg-984082576",
+    "navn": "MOMENTUM STUDIO",
+    "beskrivelse": "Utøvende kunstnerisk virksomhet og underholdningsvirksomhet innenfor musikk",
+    "kategori": "kultur",
+    "aldersgruppe": [
+      "barn",
+      "unge",
+      "voksne"
+    ],
+    "adresse": "c/o Marita Hvalsbråten, Ringkollveien 84B",
+    "poststed": "3514 HØNEFOSS",
+    "nettside": "https://www.ringerike.kommune.no/innhold/kultur-og-idrett/kulturenheten/fritidsaktiviteter/",
+    "epost": null,
+    "telefon": null,
+    "organisasjonsnummer": "984082576",
+    "kilde": "frivillighetsregisteret",
+    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/984082576"
+  },
+  {
     "id": "brreg-994741209",
     "navn": "MOTORHISTORISK KLUBB RINGERIKE OG OMEGN",
     "beskrivelse": "Aktiviteter i andre medlemsorganisasjoner ellers",
@@ -5073,24 +5092,6 @@
     "organisasjonsnummer": "812258052",
     "kilde": "frivillighetsregisteret",
     "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/812258052"
-  },
-  {
-    "id": "brreg-984082576",
-    "navn": "RINGERIKE BARNE- OG UNGDOMSKOR",
-    "beskrivelse": "Utøvende kunstnerisk virksomhet og underholdningsvirksomhet innenfor musikk",
-    "kategori": "kultur",
-    "aldersgruppe": [
-      "barn",
-      "unge"
-    ],
-    "adresse": "c/o Marita Hvalsbråten, Ringkollveien 84B",
-    "poststed": "3514 HØNEFOSS",
-    "nettside": "https://www.ringerike.kommune.no/innhold/kultur-og-idrett/kulturenheten/fritidsaktiviteter/",
-    "epost": null,
-    "telefon": null,
-    "organisasjonsnummer": "984082576",
-    "kilde": "frivillighetsregisteret",
-    "kildeUrl": "https://virksomhet.brreg.no/nb/oppslag/enheter/984082576"
   },
   {
     "id": "brreg-995310589",
